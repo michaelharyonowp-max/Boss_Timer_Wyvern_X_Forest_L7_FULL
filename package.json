@@ -1,0 +1,11 @@
+{
+  "name": "boss-timer-wyvern-x-forest-l7",
+  "version": "8.0.0",
+  "scripts": {
+    "start": "node server/index.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5"
+  }
+}

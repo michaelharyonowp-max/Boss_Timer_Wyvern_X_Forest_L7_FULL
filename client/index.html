@@ -1,0 +1,448 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Boss Timer Wyvern X Forest L7 OMEGA</title>
+
+<style>
+body{
+ background:#020617;
+ color:white;
+ font-family:Arial,sans-serif;
+ margin:0;
+ padding:20px;
+}
+h1{
+ text-align:center;
+ font-size:54px;
+ text-shadow:0 0 20px #38bdf8;
+}
+.sub{
+ text-align:center;
+ color:#94a3b8;
+ margin-bottom:20px;
+}
+.top{
+ display:flex;
+ justify-content:center;
+ gap:10px;
+ flex-wrap:wrap;
+ margin-bottom:20px;
+}
+input,select{
+ padding:12px;
+ border:none;
+ border-radius:12px;
+ background:#111827;
+ color:white;
+}
+.undo{
+ background:#8b5cf6;
+}
+.layout{
+ display:grid;
+ grid-template-columns:3fr 1fr;
+ gap:20px;
+}
+.grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+ gap:18px;
+}
+.card{
+ background:linear-gradient(180deg,#0f172a,#111827);
+ border-radius:20px;
+ padding:18px;
+ border:2px solid #1e293b;
+ box-shadow:0 0 18px rgba(0,0,0,0.4);
+}
+.yellow{border-color:#f59e0b;}
+.orange{border-color:#fb923c;}
+.red{
+ border-color:#ef4444;
+ animation:pulse 1s infinite;
+}
+@keyframes pulse{
+ 0%{transform:scale(1)}
+ 50%{transform:scale(1.01)}
+ 100%{transform:scale(1)}
+}
+.name{
+ font-size:26px;
+ font-weight:bold;
+}
+.meta{
+ margin-top:8px;
+ color:#cbd5e1;
+}
+.time{
+ margin-top:14px;
+ font-size:40px;
+ color:#38bdf8;
+ font-weight:bold;
+}
+.count{
+ margin-top:8px;
+ font-size:22px;
+ font-weight:bold;
+}
+.spawn{
+ margin-top:8px;
+ color:#fca5a5;
+}
+.actions{
+ display:flex;
+ flex-wrap:wrap;
+ gap:8px;
+ margin-top:15px;
+}
+button{
+ border:none;
+ border-radius:10px;
+ padding:10px 14px;
+ color:white;
+ font-weight:bold;
+ cursor:pointer;
+}
+.kill{background:#10b981;}
+.miss{background:#ef4444;}
+.reset{background:#3b82f6;}
+.history{
+ background:#0f172a;
+ border-radius:18px;
+ padding:16px;
+ height:85vh;
+ overflow:auto;
+}
+.log{
+ background:#111827;
+ border-radius:10px;
+ padding:10px;
+ margin-bottom:8px;
+}
+@media(max-width:1000px){
+ .layout{grid-template-columns:1fr;}
+ .history{height:auto;}
+}
+</style>
+</head>
+<body>
+
+<h1>Boss Timer Wyvern X Forest L7</h1>
+<div class="sub">FINAL EDITION • FULL MMO TRACKER</div>
+
+<div class="top">
+<input id="search" placeholder="Search boss...">
+<select id="sound">
+<option value="beep">Beep Alarm</option>
+<option value="soft">Soft Alarm</option>
+<option value="off">No Sound</option>
+</select>
+<button class="undo" onclick="undoAction()">Undo</button>
+<button class="reset" onclick="resetAllBosses()">Reset All</button>
+</div>
+
+<div class="layout">
+
+<div>
+<div class="grid" id="grid"></div>
+</div>
+
+<div class="history">
+<h2>History</h2>
+<div id="history"></div>
+</div>
+
+</div>
+
+<script>
+
+const API="http://localhost:3000";
+let bosses=[];
+let alerted={};
+
+function fmt(ts){
+ return new Date(ts).toLocaleTimeString(
+  'en-GB',
+  {
+   timeZone:'Asia/Jakarta',
+   hour:'2-digit',
+   minute:'2-digit',
+   second:'2-digit',
+   hour12:false
+  }
+ );
+}
+
+function cd(ms){
+ if(ms<=0)return "SPAWN WINDOW";
+ const t=Math.floor(ms/1000);
+ const h=Math.floor(t/3600);
+ const m=Math.floor((t%3600)/60);
+ const s=t%60;
+ return `${h}H ${m}M ${s}S`;
+}
+
+function cls(ms){
+ const min=ms/1000/60;
+ if(min<=5)return "red";
+ if(min<=15)return "orange";
+ if(min<=60)return "yellow";
+ return "";
+}
+
+function spawnLabel(ms){
+ const min=ms/1000/60;
+ if(min<=0)return "LIVE SPAWN WINDOW";
+ if(min<=5)return "VERY SOON";
+ if(min<=15)return "HIGH ALERT";
+ if(min<=30)return "SPAWN APPROACHING";
+ return "STABLE";
+}
+
+function playAlarm(){
+
+ const mode=document.getElementById("sound").value;
+
+ if(mode==="off")return;
+
+ const ctx=new(window.AudioContext||window.webkitAudioContext)();
+ const osc=ctx.createOscillator();
+ const gain=ctx.createGain();
+
+ osc.connect(gain);
+ gain.connect(ctx.destination);
+
+ osc.type=(mode==="soft")?"sine":"square";
+ osc.frequency.value=(mode==="soft")?550:900;
+
+ gain.gain.value=0.05;
+
+ osc.start();
+
+ setTimeout(()=>{
+   osc.stop();
+   ctx.close();
+ },700);
+}
+
+function notify(text){
+ if(Notification.permission==="granted"){
+   new Notification(text);
+ }
+}
+
+function checkAlerts(){
+
+ bosses.forEach(b=>{
+
+   const diff=b.nextRespawn-Date.now();
+   const min=Math.floor(diff/1000/60);
+
+   if(min<=30 && !alerted[b.name+"_30"]){
+      alerted[b.name+"_30"]=true;
+      notify(`${b.name} spawning in 30 minutes`);
+   }
+
+   if(min<=15 && !alerted[b.name+"_15"]){
+      alerted[b.name+"_15"]=true;
+      playAlarm();
+      notify(`${b.name} HIGH ALERT`);
+   }
+
+   if(min<=5 && !alerted[b.name+"_5"]){
+      alerted[b.name+"_5"]=true;
+      playAlarm();
+      notify(`${b.name} SPAWNING VERY SOON`);
+   }
+
+   if(min>30){
+      alerted[b.name+"_30"]=false;
+      alerted[b.name+"_15"]=false;
+      alerted[b.name+"_5"]=false;
+   }
+
+ });
+
+}
+
+async function loadBosses(){
+ const r=await fetch(API+"/bosses");
+ bosses=await r.json();
+ render();
+ checkAlerts();
+}
+
+async function loadHistory(){
+
+ const r=await fetch(API+"/history");
+ const data=await r.json();
+
+ const el=document.getElementById("history");
+ el.innerHTML="";
+
+ data.forEach(h=>{
+
+   const d=document.createElement("div");
+
+   d.className="log";
+
+   d.innerHTML=`
+    <b>${h.text}</b><br>
+    <small>${h.at} WIB</small>
+   `;
+
+   el.appendChild(d);
+
+ });
+
+}
+
+async function act(name,type){
+
+ await fetch(
+  `${API}/boss/${encodeURIComponent(name)}/${type}`,
+  {method:"POST"}
+ );
+
+ loadBosses();
+ loadHistory();
+}
+
+async function resetBoss(name){
+
+ const mode=prompt("Type: kill or respawn");
+
+ if(!mode)return;
+
+ const time=prompt("Enter HH:MM WIB");
+
+ if(!time)return;
+
+ await fetch(
+  `${API}/boss/${encodeURIComponent(name)}/reset`,
+  {
+   method:"POST",
+   headers:{
+    "Content-Type":"application/json"
+   },
+   body:JSON.stringify({
+    mode,
+    time
+   })
+  }
+ );
+
+ loadBosses();
+ loadHistory();
+}
+
+async function undoAction(){
+
+ await fetch(`${API}/undo`,{
+   method:"POST"
+ });
+
+ loadBosses();
+ loadHistory();
+}
+
+
+async function resetAllBosses(){
+
+ const confirmReset=confirm(
+   "Reset ALL boss timers?"
+ );
+
+ if(!confirmReset)return;
+
+ const time=prompt(
+   "Enter base HH:MM WIB for all bosses"
+ );
+
+ if(!time)return;
+
+ await fetch(`${API}/reset-all`,{
+   method:"POST",
+   headers:{
+     "Content-Type":"application/json"
+   },
+   body:JSON.stringify({time})
+ });
+
+ loadBosses();
+ loadHistory();
+}
+
+function render(){
+
+ const grid=document.getElementById("grid");
+ const search=document.getElementById("search").value.toLowerCase();
+
+ grid.innerHTML="";
+
+ bosses
+ .filter(b=>b.name.toLowerCase().includes(search))
+ .sort((a,b)=>a.nextRespawn-b.nextRespawn)
+ .forEach(b=>{
+
+   const diff=b.nextRespawn-Date.now();
+
+   const card=document.createElement("div");
+
+   card.className=`card ${cls(diff)}`;
+
+   card.innerHTML=`
+   <div class="name">${b.name}</div>
+
+   <div class="meta">
+    AI: ${b.ai}H • Chance: ${b.chance}%
+   </div>
+
+   <div class="time">
+    ${fmt(b.nextRespawn)}
+   </div>
+
+   <div class="count">
+    ${cd(diff)}
+   </div>
+
+   <div class="spawn">
+    ${spawnLabel(diff)}
+   </div>
+
+   <div class="actions">
+    <button class="kill">Kill</button>
+    <button class="miss">Miss</button>
+    <button class="reset">Reset</button>
+   </div>
+   `;
+
+   card.querySelector(".kill").onclick=()=>act(b.name,"kill");
+   card.querySelector(".miss").onclick=()=>act(b.name,"miss");
+   card.querySelector(".reset").onclick=()=>resetBoss(b.name);
+
+   grid.appendChild(card);
+
+ });
+
+}
+
+document.getElementById("search").addEventListener("input",render);
+
+if(Notification.permission!=="granted"){
+ Notification.requestPermission();
+}
+
+setInterval(render,1000);
+setInterval(loadBosses,10000);
+setInterval(loadHistory,10000);
+
+loadBosses();
+loadHistory();
+
+</script>
+</body>
+</html>
