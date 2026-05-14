@@ -1,0 +1,296 @@
+[
+  {
+    "name": "Andras",
+    "ai": 15,
+    "chance": 50,
+    "respawn": "03:48",
+    "nextRespawn": 1778791680000
+  },
+  {
+    "name": "Balbo",
+    "ai": 12,
+    "chance": 50,
+    "respawn": "08:02",
+    "nextRespawn": 1778806920000
+  },
+  {
+    "name": "Basila",
+    "ai": 4,
+    "chance": 100,
+    "respawn": "12:04",
+    "nextRespawn": 1778821440000
+  },
+  {
+    "name": "Behemoth",
+    "ai": 9,
+    "chance": 100,
+    "respawn": "20:10",
+    "nextRespawn": 1778764200000
+  },
+  {
+    "name": "Black Lilly",
+    "ai": 12,
+    "chance": 100,
+    "respawn": "15:49",
+    "nextRespawn": 1778748540000
+  },
+  {
+    "name": "Breka",
+    "ai": 6,
+    "chance": 50,
+    "respawn": "20:05",
+    "nextRespawn": 1778763900000
+  },
+  {
+    "name": "Cabrio",
+    "ai": 12,
+    "chance": 50,
+    "respawn": "21:54",
+    "nextRespawn": 1778770440000
+  },
+  {
+    "name": "Chertuba",
+    "ai": 6,
+    "chance": 50,
+    "respawn": "19:42",
+    "nextRespawn": 1778762520000
+  },
+  {
+    "name": "Contaminated Cruma",
+    "ai": 8,
+    "chance": 100,
+    "respawn": "16:10",
+    "nextRespawn": 1778749800000
+  },
+  {
+    "name": "Core Susceptor",
+    "ai": 10,
+    "chance": 33,
+    "respawn": "21:44",
+    "nextRespawn": 1778769840000
+  },
+  {
+    "name": "Coroon",
+    "ai": 12,
+    "chance": 100,
+    "respawn": "15:53",
+    "nextRespawn": 1778748780000
+  },
+  {
+    "name": "Dragon Beast",
+    "ai": 12,
+    "chance": 33,
+    "respawn": "22:00",
+    "nextRespawn": 1778770800000
+  },
+  {
+    "name": "Enkura",
+    "ai": 6,
+    "chance": 50,
+    "respawn": "13:42",
+    "nextRespawn": 1778827320000
+  },
+  {
+    "name": "Felis",
+    "ai": 3,
+    "chance": 50,
+    "respawn": "10:46",
+    "nextRespawn": 1778816760000
+  },
+  {
+    "name": "Flynt",
+    "ai": 8,
+    "chance": 33,
+    "respawn": "17:01",
+    "nextRespawn": 1778752860000
+  },
+  {
+    "name": "Gahareth",
+    "ai": 9,
+    "chance": 50,
+    "respawn": "20:11",
+    "nextRespawn": 1778764260000
+  },
+  {
+    "name": "Glaki",
+    "ai": 8,
+    "chance": 100,
+    "respawn": "22:05",
+    "nextRespawn": 1778771100000
+  },
+  {
+    "name": "Haff",
+    "ai": 20,
+    "chance": 33,
+    "respawn": "17:51",
+    "nextRespawn": 1778755860000
+  },
+  {
+    "name": "Hisilrome",
+    "ai": 6,
+    "chance": 50,
+    "respawn": "15:50",
+    "nextRespawn": 1778748600000
+  },
+  {
+    "name": "Katan",
+    "ai": 10,
+    "chance": 100,
+    "respawn": "00:17",
+    "nextRespawn": 1778779020000
+  },
+  {
+    "name": "Kelsus",
+    "ai": 10,
+    "chance": 50,
+    "respawn": "00:06",
+    "nextRespawn": 1778778360000
+  },
+  {
+    "name": "Landor",
+    "ai": 9,
+    "chance": 100,
+    "respawn": "18:59",
+    "nextRespawn": 1778759940000
+  },
+  {
+    "name": "Matura",
+    "ai": 6,
+    "chance": 50,
+    "respawn": "14:03",
+    "nextRespawn": 1778828580000
+  },
+  {
+    "name": "Medusa",
+    "ai": 10,
+    "chance": 100,
+    "respawn": "00:10",
+    "nextRespawn": 1778778600000
+  },
+  {
+    "name": "Mirror of Oblivion",
+    "ai": 11,
+    "chance": 100,
+    "respawn": "01:12",
+    "nextRespawn": 1778782320000
+  },
+  {
+    "name": "Mutated Cruma",
+    "ai": 8,
+    "chance": 100,
+    "respawn": "15:47",
+    "nextRespawn": 1778748420000
+  },
+  {
+    "name": "Olkuth",
+    "ai": 24,
+    "chance": 33,
+    "respawn": "22:33",
+    "nextRespawn": 1778772780000
+  },
+  {
+    "name": "Pan Dra'eed",
+    "ai": 12,
+    "chance": 100,
+    "respawn": "20:06",
+    "nextRespawn": 1778763960000
+  },
+  {
+    "name": "Pan Narod",
+    "ai": 5,
+    "chance": 50,
+    "respawn": "13:43",
+    "nextRespawn": 1778827380000
+  },
+  {
+    "name": "Queen Ant",
+    "ai": 6,
+    "chance": 33,
+    "respawn": "21:48",
+    "nextRespawn": 1778770080000
+  },
+  {
+    "name": "Repiro",
+    "ai": 7,
+    "chance": 50,
+    "respawn": "19:12",
+    "nextRespawn": 1778760720000
+  },
+  {
+    "name": "Samuel",
+    "ai": 12,
+    "chance": 100,
+    "respawn": "17:52",
+    "nextRespawn": 1778755920000
+  },
+  {
+    "name": "Sarka",
+    "ai": 10,
+    "chance": 100,
+    "respawn": "00:08",
+    "nextRespawn": 1778778480000
+  },
+  {
+    "name": "Savan",
+    "ai": 12,
+    "chance": 100,
+    "respawn": "20:05",
+    "nextRespawn": 1778763900000
+  },
+  {
+    "name": "Selu",
+    "ai": 12,
+    "chance": 33,
+    "respawn": "20:08",
+    "nextRespawn": 1778764080000
+  },
+  {
+    "name": "Strongeist",
+    "ai": 7,
+    "chance": 100,
+    "respawn": "19:09",
+    "nextRespawn": 1778760540000
+  },
+  {
+    "name": "Talakin",
+    "ai": 10,
+    "chance": 100,
+    "respawn": "00:07",
+    "nextRespawn": 1778778420000
+  },
+  {
+    "name": "Talkin",
+    "ai": 8,
+    "chance": 33,
+    "respawn": "16:04",
+    "nextRespawn": 1778749440000
+  },
+  {
+    "name": "Timinel",
+    "ai": 8,
+    "chance": 100,
+    "respawn": "16:14",
+    "nextRespawn": 1778750040000
+  },
+  {
+    "name": "Timiris",
+    "ai": 8,
+    "chance": 100,
+    "respawn": "16:06",
+    "nextRespawn": 1778749560000
+  },
+  {
+    "name": "Tromba",
+    "ai": 7,
+    "chance": 50,
+    "respawn": "18:45",
+    "nextRespawn": 1778759100000
+  },
+  {
+    "name": "Valefar",
+    "ai": 6,
+    "chance": 50,
+    "respawn": "01:43",
+    "nextRespawn": 1778784180000
+  }
+]
